@@ -693,3 +693,9 @@ procdump(void)
     printf("\n");
   }
 }
+
+// hello: printing hello msg
+void print_hello(int n)
+{
+  printf("Hello from the kernelspace %d\n", n);
+}
