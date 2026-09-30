@@ -130,6 +130,14 @@ static uint64 (*syscalls[])(void) = {
 [SYS_hello]   sys_hello, // hello: syscall entry
 };
 
+uint64 num_syscalls = 0;
+
+int
+get_num_syscalls(void)
+{
+  return num_syscalls;
+}
+
 void
 syscall(void)
 {
@@ -141,6 +149,9 @@ syscall(void)
     // Use num to lookup the system call function for num, call it,
     // and store its return value in p->trapframe->a0
     p->trapframe->a0 = syscalls[num]();
+    // increment the counter for succesfull syscalls.
+    // this increments AFTER the current syscall is executed, so it doesn't include the current syscall.
+    num_syscalls++;
   } else {
     printf("%d %s: unknown sys call %d\n",
             p->pid, p->name, num);
