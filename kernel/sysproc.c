@@ -100,3 +100,11 @@ sys_hello(void) // hello syscall definition
   print_hello(n);
   return 0;
 }
+
+uint64
+sys_sysinfo(void) // sysinfo syscall definition
+{
+  int n;
+  argint(0, &n);
+  return sysinfo(n);
+}

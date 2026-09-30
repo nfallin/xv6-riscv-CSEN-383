@@ -699,3 +699,26 @@ void print_hello(int n)
 {
   printf("Hello from the kernelspace %d\n", n);
 }
+
+int sysinfo(int n)
+{
+  uint64 count = 0;
+  switch(n) {
+    case 0: // return the total number of active processes in the system (should I myproc here?)
+      for (int i = 0; i < NPROC; i++) {
+        if (proc[i].state != UNUSED) {
+          count++;
+        }
+      }
+      break;
+    case 1: // return the total number of previous syscalls made since boot
+      count = get_num_syscalls();
+      break;
+    case 2: // return the number of free memory pages in the system
+      count = kfreemem();
+      break;
+    default:
+      return -1;
+  }
+  return count;
+}

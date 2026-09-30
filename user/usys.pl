@@ -38,3 +38,5 @@ entry("sleep");
 entry("uptime");
 # hello syscall for user
 entry("hello");
+# sysinfo syscall for user
+entry("sysinfo");
