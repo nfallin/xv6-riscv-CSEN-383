@@ -82,6 +82,7 @@ kalloc(void)
 }
 
 // return the number of currently free 4096-byte pages of physical memory.
+// kmem.freelist is a linked list of free pages, so we can just traverse it and count the number of nodes.
 int
 kfreemem(void)
 {
