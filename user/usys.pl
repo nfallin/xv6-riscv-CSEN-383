@@ -40,3 +40,4 @@ entry("uptime");
 entry("hello");
 # sysinfo syscall for user
 entry("sysinfo");
+entry("procinfo");

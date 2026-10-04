@@ -4,6 +4,7 @@
 #include "param.h"
 #include "memlayout.h"
 #include "spinlock.h"
+#include "pinfo.h"
 #include "proc.h"
 
 uint64
@@ -107,4 +108,22 @@ sys_sysinfo(void) // sysinfo syscall definition
   int n;
   argint(0, &n);
   return sysinfo(n);
+}
+
+uint64
+sys_procinfo(void)
+{
+  uint64 addr;
+  struct pinfo info;
+
+  argaddr(0, &addr);
+
+  if(procinfo(&info) < 0)
+    return -1;
+
+  // write the kernel struct to the provided user space address
+  if(copyout(myproc()->pagetable, addr, (char *)&info, sizeof(info)) < 0)
+    return -1;
+
+  return 0;
 }

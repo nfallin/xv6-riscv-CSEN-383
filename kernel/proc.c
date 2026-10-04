@@ -3,6 +3,7 @@
 #include "memlayout.h"
 #include "riscv.h"
 #include "spinlock.h"
+#include "pinfo.h"
 #include "proc.h"
 #include "defs.h"
 
@@ -139,6 +140,9 @@ found:
     release(&p->lock);
     return 0;
   }
+
+  // initialize the syscall counter
+  p->syscall_count = 0;
 
   // Set up new context to start executing at forkret,
   // which returns to user space.
@@ -700,9 +704,10 @@ void print_hello(int n)
   printf("Hello from the kernelspace %d\n", n);
 }
 
+// sysinfo: returns system info based on the input parameter n
 int sysinfo(int n)
 {
-  uint64 count = 0;
+  int count = 0;
   switch(n) {
     case 0: // return the total number of active processes in the system (should I myproc here?)
       for (int i = 0; i < NPROC; i++) {
@@ -715,10 +720,41 @@ int sysinfo(int n)
       count = get_num_syscalls();
       break;
     case 2: // return the number of free memory pages in the system
-      count = kfreemem();
+      count = kfreepages();
       break;
     default:
       return -1;
   }
   return count;
+}
+
+// procinfo: populates the provided pinfo struct with information about the current process. returns 0 on success and -1 on failure
+int procinfo(struct pinfo *info)
+{
+  // check the input parameter
+  if (info == 0) {
+    return -1;
+  }
+
+  // get the PCB of the current process
+  struct proc *p = myproc();
+  if (p == 0) {
+    return -1; // No current process
+  }
+
+  // these are protected by the process lock
+  acquire(&p->lock);
+  if (p->parent)
+  {
+    info->ppid = p->parent->pid; // Parent PID
+  }
+  else
+  {
+    info->ppid = -1; // No parent
+  }
+  info->syscall_count = p->syscall_count; // Number of syscalls made
+  info->page_usage = (p->sz + (PGSIZE - 1)) / PGSIZE; // Number of pages used by the process (rounded up so 10000 bytes = 3 pages)
+  release(&p->lock);
+
+  return 0;
 }
