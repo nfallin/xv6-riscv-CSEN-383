@@ -127,3 +127,19 @@ sys_procinfo(void)
 
   return 0;
 }
+
+uint64
+sys_sched_statistics(void) // lab2: print per-process tickets and ticks used
+{
+  sched_statistics();
+  return 0;
+}
+
+uint64
+sys_sched_tickets(void) // lab2: set the caller's ticket value
+{
+  int n;
+  argint(0, &n);
+  sched_tickets(n);
+  return 0;
+}

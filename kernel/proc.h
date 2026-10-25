@@ -92,6 +92,10 @@ struct proc {
   int xstate;                  // Exit status to be returned to parent's wait
   int pid;                     // Process ID
   int syscall_count;           // number of syscalls made by the process
+  int tickets;                 // lab2: ticket value (1..MAX_TICKETS)
+  int run_ticks;               // lab2: number of times scheduled (~ticks used)
+  uint64 stride;               // lab2: STRIDE_K / tickets
+  uint64 pass;                 // lab2: stride pass value
 
   // wait_lock must be held when using this:
   struct proc *parent;         // Parent process

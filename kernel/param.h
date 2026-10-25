@@ -13,3 +13,5 @@
 #define MAXPATH      128   // maximum file path name
 #define USERSTACK    1     // user stack pages
 
+#define MAX_TICKETS  10000 // lab2: max (and default) tickets per process
+#define STRIDE_K     10000 // lab2: stride1 constant for stride scheduling
