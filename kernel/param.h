@@ -1,3 +1,4 @@
+#define MAXTHREADS   20  // max number of child threads per process (lab 3)
 #define NPROC        64  // maximum number of processes
 #define NCPU          8  // maximum number of CPUs
 #define NOFILE       16  // open files per process

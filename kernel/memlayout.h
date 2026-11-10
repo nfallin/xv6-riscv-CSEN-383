@@ -57,3 +57,6 @@
 //   TRAPFRAME (p->trapframe, used by the trampoline)
 //   TRAMPOLINE (the same page as in the kernel)
 #define TRAPFRAME (TRAMPOLINE - PGSIZE)
+
+// Lab 3 addition
+#define THREAD_TRAPFRAME(tid) (TRAPFRAME - PGSIZE * (uint64)(tid))

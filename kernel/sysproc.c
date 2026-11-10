@@ -27,6 +27,15 @@ sys_fork(void)
   return fork();
 }
 
+// Lab 3: int clone(void *stack)
+uint64
+sys_clone(void)
+{
+  uint64 stack;
+  argaddr(0, &stack);
+  return clone((void*)stack);
+}
+
 uint64
 sys_wait(void)
 {
